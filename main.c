@@ -41,9 +41,9 @@ int main (int argc, char* argv[]){
     if (strcmp(argv[i], "--add") == 0 && i + 1 < argc) {
                     const char *district = argv[++i];
                     add(district, role, user);
-                   // log_action(district, role, user, "add");
-                   // update_symlink(district);
-                   // ensure_district(district);
+                    log_action(district, role, user, "add");
+                    update_symlink(district);
+                    ensure_district(district);
 
                     return 0;
                 }
@@ -64,16 +64,16 @@ int main (int argc, char* argv[]){
                     const char *district = argv[++i];
                     int rid = atoi(argv[++i]);
                     remove_report(district, role, user, rid);
-                    //action(district, role, user, "remove_report");
-                    //update_symlink(district);
+                    log_action(district, role, user, "remove_report");
+                    update_symlink(district);
                     return 0;
                 }
     
                 if (strcmp(argv[i], "--update_threshold") == 0 && i + 2 < argc) {
                     const char *district = argv[++i];
                     int val = atoi(argv[++i]);
-                    //update_threshold(district, role, user, val);
-                    //log_action(district, role, user, "update_threshold");
+                    update_threshold(district, role, user, val);
+                    log_action(district, role, user, "update_threshold");
                     return 0;
                 }
     

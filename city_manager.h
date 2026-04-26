@@ -1,5 +1,6 @@
 #ifndef CITY_MANAGER_H 
 #define CITY_MANAGER_H
+#define _DEFAULT_SOURCE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +25,9 @@
 #define READ_WRITE_READ 0640  // Managers may read and write; inspectors may read
 #define RWRR            0644 // Anyone may read; only the manager role may write
 
-
+#define DEFAULT_SEVERITY "3\n"
+#define LOGS "logged_district"
+#define SYMLINK_PREFIX "active_reports-"
 
 typedef struct {
     int id;
@@ -48,7 +51,10 @@ int  check_permission( const char* path, const char* role, char action);
 int  get_next_id     ( const char* district);
 void mode_to_string(mode_t mode, char *out);
 void set_permissions(const char *path, mode_t mode);
-
+void ensure_district(const char *district);
+void log_action(const char *district, const char *role, const char *user, const char *action);
+void update_symlink(const char *district);
+void remove_symlink(const char *district);
 
 void filter( const char* district, const char* role, int argc, char* argv[]  );
 int parse_condition(const char *input, char *field, char *op, char *value);
