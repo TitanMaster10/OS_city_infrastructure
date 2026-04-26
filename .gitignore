@@ -1,2 +1,7 @@
 *.o
 city_manager
+*.dSYM/
+.DS_Store
+downtown/
+active_reports-*
+reports.dat

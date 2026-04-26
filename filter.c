@@ -2,12 +2,6 @@
 
 /*
  * AI-generated function (parse_condition)
- * Splits "field:operator:value" into its 3 parts.
- * 
- * I changed strtok to manual scanning because strtok modifies
- * the input string and input is const char*. Also added bounds
- * checking which the AI forgot about.
- * 
  * See ai_usage.md for details.
  */
 int parse_condition(const char *input, char *field, char *op, char *value)
@@ -55,16 +49,6 @@ int parse_condition(const char *input, char *field, char *op, char *value)
     return 1;
 }
 
-/*
- * AI-generated function (match_condition)
- * Checks if a report matches a single condition.
- * 
- * Uses a cmp variable (-1/0/1) then applies the operator at the end.
- * AI got the type conversions right (atoi for severity, atol for timestamp,
- * strcmp for strings). I added the warning for unknown fields.
- * 
- * See ai_usage.md for details.
- */
 int match_condition(Report *r, const char *field, const char *op,
                     const char *value)
 {
