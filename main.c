@@ -40,10 +40,11 @@ int main (int argc, char* argv[]){
     for(int i=1; i<argc;i++){
     if (strcmp(argv[i], "--add") == 0 && i + 1 < argc) {
                     const char *district = argv[++i];
+                    ensure_district(district);
                     add(district, role, user);
                     log_action(district, role, user, "add");
                     update_symlink(district);
-                    ensure_district(district);
+                    
 
                     return 0;
                 }

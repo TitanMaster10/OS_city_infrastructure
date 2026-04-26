@@ -10,7 +10,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c city_manager.h
-	$(CC) $(CFLAGS) -c $
+	$(CC) $(CFLAGS) -c $<
 
 clean:
 	rm -f $(TARGET) $(OBJS)

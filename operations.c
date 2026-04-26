@@ -77,7 +77,7 @@ void list(const char* district, const char* role){
     strftime(time,sizeof(time), "%Y-%m-%d %H:%M:%S",tinfo);
 
     printf("File: %s\n",path);
-    printf("Permissions: %s Size: %ld, bytes Modified :%s\n", perm_str,st.st_size,time);
+    printf("Permissions: %s Size: %lld, bytes Modified :%s\n", perm_str,(long long)st.st_size,time);
 
     int index = open(path, O_RDONLY);
     if (index == -1) {
