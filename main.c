@@ -1,30 +1,28 @@
 
 
 #include "city_manager.h"
- const char *role =NULL;
- const char *user =NULL;
 
-int checker(char* argv[]){
-    if ( strcmp( argv[0] , "./city_manager" ) != 0 ) return 1;
-    if ( strcmp( argv[1] , "--role" ) != 0 ) return 1;
-    if ( strcmp( argv[2] , "inspector" ) != 0  || strcmp ( argv [2], "manager") != 0) return 1;
-    else role = argv[2];
-    return 0;
-}
 
 
 int main (int argc, char* argv[]){
 
-        if (argc <6 ){
-            fprintf(stderr,"usage : <project> <--role> <role> <--command> <where> <extras...>");
-            exit(1);
-        }
+    if (argc <6 ){
+        fprintf(stderr,"usage : <project> <--role> <role> <--command> <where> <extras...>");
+        exit(1);
+    }
 
+    const char *role =NULL;
+    const char *user =NULL;
 
-        if ( checker(argv) ) {
-            fprintf(stderr,"invalid arguments try again");
-            exit(1);
+    // role user checker 
+    for(int i = 0 ; i < argc; i++ ){
+        if (strcmp(argv[i], "--role") == 0 && i+1 <argc){
+            role = argv[++i];
         }
+        else if (strcmp(argv[i], "--user") == 0 && i+1 <argc){
+            user = argv[++i];
+            }
+    }
         if (!role){
             fprintf(stderr,"--role is required, error.\n");
             exit(1);
@@ -38,26 +36,55 @@ int main (int argc, char* argv[]){
                 fprintf(stderr,"Role must be either manager or inspector.\n");
                 exit(1);
             }
+    // command checker
+    for(int i=1; i<argc;i++){
+    if (strcmp(argv[i], "--add") == 0 && i + 1 < argc) {
+                    const char *district = argv[++i];
+                    add(district, role, user);
+                   // log_action(district, role, user, "add");
+                   // update_symlink(district);
+                   // ensure_district(district);
 
-
-
-
-        /*
-city_manager --role inspector --add downtown
-city_manager --role manager --remove_report downtown 17
-
-*/
-
-/*
-. For example, before reading district.cfg, check that the owner-read bit is set;
-
-*/
-
-/*
- before writing to logged_district as an inspector, detect the restriction and refuse.
+                    return 0;
+                }
+    
+                if (strcmp(argv[i], "--list") == 0 && i + 1 < argc) {
+                    list(argv[++i], role);
+                    return 0;
+                }
+    
+                if (strcmp(argv[i], "--view") == 0 && i + 2 < argc) {
+                    const char *district = argv[++i];
+                    int rid = atoi(argv[++i]);
+                    view(district, role, rid);
+                    return 0;
+                }
+    
+                if (strcmp(argv[i], "--remove_report") == 0 && i + 2 < argc) {
+                    const char *district = argv[++i];
+                    int rid = atoi(argv[++i]);
+                    remove_report(district, role, user, rid);
+                    //action(district, role, user, "remove_report");
+                    //update_symlink(district);
+                    return 0;
+                }
+    
+                if (strcmp(argv[i], "--update_threshold") == 0 && i + 2 < argc) {
+                    const char *district = argv[++i];
+                    int val = atoi(argv[++i]);
+                    //update_threshold(district, role, user, val);
+                    //log_action(district, role, user, "update_threshold");
+                    return 0;
+                }
+    
+                if (strcmp(argv[i], "--filter") == 0 && i + 1 < argc) {
+                    const char *district = argv[++i];
+                    i++;
+                    filter(district, role, argc - i, &argv[i]);
+                    return 0;
+                }
+            }
  
- */
-
-        return 0;
-
+        fprintf(stderr,"no valid command found.\n");
+        return 1;
 }
