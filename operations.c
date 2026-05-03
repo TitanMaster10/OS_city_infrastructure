@@ -249,3 +249,7 @@ void update_threshold(const char *district, const char *role,
 
     printf("updated threshold for %s to %d.\n", district, value);
 }
+
+void remove_district(const char* district, const char* role, const char* user){
+    
+}

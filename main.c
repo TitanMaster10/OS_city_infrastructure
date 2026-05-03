@@ -38,6 +38,12 @@ int main (int argc, char* argv[]){
             }
     // command checker
     for(int i=1; i<argc;i++){
+        if (strcmp(argv[i],"--remove_district") == 0 && i+1 <argc){
+            const char *district = argv[++i];
+            remove_district(district,role,user);
+
+            return 0;
+        }
     if (strcmp(argv[i], "--add") == 0 && i + 1 < argc) {
                     const char *district = argv[++i];
                     ensure_district(district);
