@@ -251,5 +251,52 @@ void update_threshold(const char *district, const char *role,
 }
 
 void remove_district(const char* district, const char* role, const char* user){
-    
+
+    struct stat st;
+
+    if (strcmp(role,MANAGER_ROLE) != 0){
+        fprintf(stderr,"Only managers can remove districts.\n");
+        exit(1);
+    }
+
+    if(strlen(district) == 0 || strcmp(district,"/") == 0 || strcmp(district,".") == 0 || strstr(district,"..") != NULL  || district[0] == '/'){
+        fprintf(stderr,"invalid district name %s .\n",district);
+        exit(1);
+    }
+
+    if(lstat(district,&st) == -1 ){
+        fprintf(stderr,"districtul %s nu exista.\n",district);
+        exit(1);
+    }
+    if(!S_ISDIR(st.st_mode)){
+        fprintf(stderr,"%s nu este director.\n",district);
+        exit(1);
+    }
+
+    remove_symlink(district);
+
+    pid_t pid = fork();
+
+    if( pid < 0 ){
+        perror("fork");
+        exit(1);
+    }
+
+    if (pid == 0){
+        execlp("rm","rm","-rf",district, NULL);
+        perror("execlp rm");
+        _exit(1);
+    }
+
+    int status;
+    waitpid(pid,&status,0);
+    if(WIFEXITED(status) && WEXITSTATUS(status) == 0){
+        printf("district %s inlaturat.\n", district);
+    }else{
+        fprintf(stderr,"eroare la stergerea districtului %s.\n",district);
+        exit(1);
+    }
+
+
+
 }

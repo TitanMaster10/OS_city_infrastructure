@@ -22,6 +22,7 @@
 #define INSPECTOR_ROLE "inspector"
 #define FILE_REPORTS   "reports.dat"
 #define FILE_CONFIGURATION "district.cfg"
+#define MONITOR            ".monitor_pid"
 #define FULL_ACCESS     0750    // Managers have full access; inspectors read and execute only
 #define READ_APPEND     0664   // Both roles may read; both may write (append)
 #define READ_WRITE_READ 0640  // Managers may read and write; inspectors may read
