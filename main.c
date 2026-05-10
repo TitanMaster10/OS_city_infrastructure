@@ -50,7 +50,12 @@ int main (int argc, char* argv[]){
                     add(district, role, user);
                     log_action(district, role, user, "add");
                     update_symlink(district);
-                    
+                    if (notify_monitor(district, user) == 0){
+                        log_action(district, role, user, "add:monitor_notified");
+                    } else {
+                        log_action(district, role, user, "add:monitor_not_informed");
+                        fprintf(stderr,"nu a putut fi informat monitorul.\n");
+                    }
 
                     return 0;
                 }

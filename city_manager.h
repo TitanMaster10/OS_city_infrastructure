@@ -59,7 +59,8 @@ void log_action(const char *district, const char *role, const char *user, const 
 void update_symlink(const char *district);
 void remove_symlink(const char *district);
 void remove_district(const char* district, const char* role, const char *user);
-
+int notify_monitor(const char*district,const char * user);
+ 
 void filter( const char* district, const char* role, int argc, char* argv[]  );
 int parse_condition(const char *input, char *field, char *op, char *value);
 int match_condition(Report *r, const char *field, const char *op, const char *value);

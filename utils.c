@@ -137,3 +137,26 @@ void remove_symlink(const char *district)
     if (lstat(link_name, &lst) == 0 && S_ISLNK(lst.st_mode))
         unlink(link_name);
 }
+
+int notify_monitor(const char *district, const char *user){
+    int fd = open(MONITOR,O_RDONLY);
+    if (fd == -1)return -1;
+
+    char buf[32];
+    memset(buf, 0, sizeof(buf));
+    int n = read(fd, buf, sizeof(buf) - 1);
+    close(fd);
+
+    if (n <= 0)return -1;
+    buf[strcspn(buf, "\n")] = '\0';
+
+    pid_t mon_pid = (pid_t)atoi(buf);
+    if (mon_pid <= 0)return -1;
+
+    if (kill(mon_pid, SIGUSR1) == -1){
+        perror("kill SIGUSR1");
+        return -1;
+    }
+    return 0;
+
+}
