@@ -4,12 +4,12 @@ volatile sig_atomic_t running = 1;
 
 void signal_handler(int sig){
     if (sig ==SIGINT){
-        char msg[] = "SIGINT primit, inchiderea\n";
+        char msg[] = "SIGINT:inchidere monitor\n";
         write(STDOUT_FILENO, msg, sizeof(msg) - 1);
         running = 0;
     }
     else if (sig == SIGUSR1){
-        char msg[] = " nou raport a fost adaugat\n";
+        char msg[] = "SIGUSR1:nou raport a fost adaugat\n";
         write(STDOUT_FILENO, msg, sizeof(msg) - 1);
     }
 }
@@ -50,9 +50,10 @@ int check_existing_monitor(){
         return 0;
 
     if (kill(existing, 0) == 0){
-        // process exists, monitor already running
-        printf("ERROR:monitor already running pid=%d\n", existing);
-        fflush(stdout);
+
+        char errmsg[128];
+        int elen = snprintf(errmsg, sizeof(errmsg), "ERROR:monitorul deja merge pid=%d\n", existing);
+        write(STDOUT_FILENO, errmsg, elen);
         return 1;
     }
 
@@ -74,8 +75,9 @@ int main(){
     write(fd, buf, len);
     close(fd);
 
-    printf("sa inceput monitorizarea pid %d\n", getpid());
-    fflush(stdout);
+    char infomsg[128];
+    int ilen = snprintf(infomsg, sizeof(infomsg), "INFO:sa inceput monitorizarea pid %d\n", getpid());
+    write(STDOUT_FILENO, infomsg, ilen);
 
     setup_signals();
 
