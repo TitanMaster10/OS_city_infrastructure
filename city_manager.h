@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <dirent.h>
 
 #define INSPECTOR_SIZE   32
 #define CATEGORY_SIZE    32
@@ -58,6 +59,7 @@ void ensure_district(const char *district);
 void log_action(const char *district, const char *role, const char *user, const char *action);
 void update_symlink(const char *district);
 void remove_symlink(const char *district);
+void check_dangling_links(void);
 void remove_district(const char* district, const char* role, const char *user);
 int notify_monitor(const char*district,const char * user);
  

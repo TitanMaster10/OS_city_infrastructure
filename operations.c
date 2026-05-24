@@ -63,6 +63,8 @@ void list(const char* district, const char* role){
     char path[256];
     Report r;
     
+        check_dangling_links();
+
     build_path(district, FILE_REPORTS, path, sizeof(path));
     if (stat(path, &st) == -1){
         fprintf(stderr, "No reports file in %s, error.\n",district);

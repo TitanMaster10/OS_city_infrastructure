@@ -87,7 +87,11 @@ void log_action(const char *district, const char *role,
     char path[256];
 
     build_path(district, LOGS, path, sizeof(path));
-    
+
+    struct stat st;
+    if (stat(path, &st) == 0 && !check_permission(path, role, 'w'))
+        return;
+
     int index;
     index = open(path, O_WRONLY | O_APPEND | O_CREAT, RWRR);
     if (index == -1) {
@@ -159,4 +163,26 @@ int notify_monitor(const char *district, const char *user){
     }
     return 0;
 
+}
+void check_dangling_links(void)
+{
+    DIR *d = opendir(".");
+    if (d == NULL)
+        return;
+
+    struct dirent *e;
+    struct stat lst, tst;
+
+    while ((e = readdir(d)) != NULL) {
+        if (strncmp(e->d_name, SYMLINK_PREFIX, strlen(SYMLINK_PREFIX)) != 0)
+            continue;
+        if (lstat(e->d_name, &lst) == -1)
+            continue;
+        if (!S_ISLNK(lst.st_mode))
+            continue;
+        if (stat(e->d_name, &tst) == -1)
+            fprintf(stderr, "Warning: dangling symlink '%s' (target missing).\n",
+                    e->d_name);
+    }
+    closedir(d);
 }
