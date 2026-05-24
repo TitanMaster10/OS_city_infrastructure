@@ -71,13 +71,13 @@ void ensure_district(const char *district)
     // logged_district (empty initially)
     build_path(district, LOGS, path, sizeof(path));
     if (stat(path, &st) == -1) {
-        int index = open(path, O_WRONLY | O_CREAT | O_TRUNC, READ_WRITE_READ);
+        int index = open(path, O_WRONLY | O_CREAT | O_TRUNC, RWRR);
         if (index == -1) {
             perror("opening logged_district error.");
             exit(1);
         }
         close(index);
-        chmod(path, READ_WRITE_READ);
+        chmod(path, RWRR);
     }
 }
 
@@ -89,7 +89,7 @@ void log_action(const char *district, const char *role,
     build_path(district, LOGS, path, sizeof(path));
     
     int index;
-    index = open(path, O_WRONLY | O_APPEND | O_CREAT, READ_WRITE_READ);
+    index = open(path, O_WRONLY | O_APPEND | O_CREAT, RWRR);
     if (index == -1) {
         perror("open logged_district");
         return;
